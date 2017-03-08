@@ -1,0 +1,24 @@
+{
+  "name": "ctrlweb/badge-factor-gravityforms-add-on",
+  "description": "",
+  "type": "wordpress-plugin",
+  "keywords": [
+    "badgeos",
+    "gravityforms",
+    "wordpress"
+  ],
+  "homepage": "https://github.com/ctrlwebinc/badgeos-gravityforms-add-on",
+  "license": "MIT",
+  "authors": [ {
+    "name": "ctrlweb",
+    "homepage": "https://ctrlweb.ca/"
+  } ],
+  "support": {
+    "issues": "https://github.com/ctrlwebinc/badgeos-gravityforms-add-on/issues",
+    "wiki": "https://github.com/ctrlwebinc/badgeos-gravityforms-add-on/wiki"
+  },
+  "require": {
+    "composer/installers": "~1.0",
+    "php": ">=5.6"
+  }
+}

@@ -29,11 +29,13 @@
  * SOFTWARE.
  */
 
+
 /**
  * Register the [badgeos_gravityform_submission] shortcode.
  * @since 1.0.0
  */
 function bos_gform_register_submission_shortcode() {
+
     badgeos_register_shortcode( array(
         'name'            => __( 'GravityForm Submission', 'badgeos' ),
         'description'     => __( 'Render a GravityForm submission form.', 'badgeos' ),
@@ -176,24 +178,22 @@ function bos_gform_do_form_submission( $pdf_path, $filename, $settings, $entry, 
     if ( null !== $achievement_id ) {
         $members_page_slug = get_permalink(get_option('bp-pages')['members']);
 
-        $submission_id = bos_gform_create_submission( $achievement_id, $submission_title, "<a href='{$members_page_slug}$user_login/evidence/{$filename}' target='_blank'>" . __('Submitted Form', 'badgefactor') . "</a>", get_current_user_id() );
-
-        /*
-        $filetype   = wp_check_filetype( $pdf_path, null );
-        $title      = $filename;
-        $ext        = strrchr( $filename, '.' );
-        $title      = ( $ext !== false ) ? substr( $title, 0, -strlen( $ext ) ) : $title;
 
 
-        $attachment = array(
-            'post_mime_type'    => $filetype['type'],
-            'post_title'        => addslashes( $title ),
-            'post_content'      => '',
-            'post_status'       => 'inherit',
-            'post_parent'       => $submission_id
-        );
-        wp_insert_attachment( $attachment, $pdf_path );
-        */
+        $search_criteria['status'] = 'active';
+        $search_criteria['field_filters'][] = array( 'key' => 'created_by', 'value' => wp_get_current_user()->ID);
+
+        $entries = GFAPI::get_entries($form['id'], $search_criteria);
+        $pdf_link = "#";
+        foreach ($entries as $entry)
+        {
+            $pdf = GPDFAPI::get_form_pdfs(1);
+            $pdf_link = "/pdf/".key($pdf)."/".$entry['id'];
+        }
+
+        $submission_id = bos_gform_create_submission( $achievement_id, $submission_title, "<a href='$pdf_link' target='_blank'>" . __('Submitted Form', 'badgefactor') . "</a>", get_current_user_id() );
+
+
     }
 }
 add_action('gfpdf_post_save_pdf', 'bos_gform_do_form_submission', 10, 5);

@@ -176,9 +176,6 @@ function bos_gform_do_form_submission( $pdf_path, $filename, $settings, $entry, 
     $user_login = wp_get_current_user()->user_login;
 
     if ( null !== $achievement_id ) {
-        $members_page_slug = get_permalink(get_option('bp-pages')['members']);
-
-
 
         $search_criteria['status'] = 'active';
         $search_criteria['field_filters'][] = array( 'key' => 'created_by', 'value' => wp_get_current_user()->ID);
@@ -187,7 +184,7 @@ function bos_gform_do_form_submission( $pdf_path, $filename, $settings, $entry, 
         $pdf_link = "#";
         foreach ($entries as $entry)
         {
-            $pdf = GPDFAPI::get_form_pdfs(1);
+            $pdf = GPDFAPI::get_form_pdfs($form['id']);
             $pdf_link = "/pdf/".key($pdf)."/".$entry['id'];
         }
 
